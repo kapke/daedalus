@@ -14,7 +14,6 @@ executable make-installer
   main-is:             Installer.hs
   other-modules:       MacInstaller
                      , WindowsInstaller
-                     , RewriteLibs
                      , Launcher
   build-depends:       base
                      , filepath

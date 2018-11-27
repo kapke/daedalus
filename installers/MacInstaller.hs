@@ -15,7 +15,6 @@ import           Turtle               (ExitCode (..), echo, procs, shell, shells
 import           Turtle.Line          (unsafeTextToLine)
 
 import           Launcher
-import           RewriteLibs          (chain)
 
 main :: IO ()
 main = do
@@ -53,7 +52,7 @@ main = do
       copyFile "client.conf" (dir <> "/client.conf")
 
       -- Rewrite libs paths and bundle them
-      _ <- chain dir $ fmap T.pack [dir <> "/cardano-launcher", dir <> "/cardano-node"]
+--      _ <- chain dir $ fmap T.pack [dir <> "/cardano-launcher", dir <> "/cardano-node"]
       pure ()
     "etc" -> do
       copyFile "build-certificates-unix-mantis.sh" (dir <> "/build-certificates-unix.sh")

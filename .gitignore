@@ -9,6 +9,7 @@ pids
 *curl*
 installers/*.exe
 installers/*.nsi
+installers/result
 installers/version.txt
 installers/log-config-prod.yaml
 installers/runtempinstaller.bat
