@@ -22,8 +22,7 @@ const shouldBuildAll = argv.all || false;
 
 const DEFAULT_OPTS = {
   dir: './',
-  name: appName,
-  appname: 'Daedalus',
+  name: 'Daedalus',
   asar: shouldUseAsar,
   ignore: [
     /^\/.buildkite($|\/)/,
