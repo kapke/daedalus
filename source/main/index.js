@@ -4,7 +4,7 @@ import { app, BrowserWindow, shell } from 'electron';
 import { client } from 'electron-connect';
 import { includes } from 'lodash';
 import { Logger } from './utils/logging';
-import { logSystemInfo } from './utils/setupLogging';
+import { setupLogging, logSystemInfo } from './utils/setupLogging';
 import { getNumberOfEpochsConsolidated } from './utils/getNumberOfEpochsConsolidated';
 import { handleDiskSpace } from './utils/handleDiskSpace';
 import { createMainWindow } from './windows/main';
@@ -51,7 +51,7 @@ const safeExit = async () => {
 };
 
 const onAppReady = async () => {
-  // setupLogging();
+  setupLogging();
 
   const cpu = os.cpus();
   const isInSafeMode = includes(process.argv.slice(1), '--safe-mode');

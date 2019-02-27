@@ -4,6 +4,7 @@
 
 /** Build file to package the app for release */
 
+const fs = require('fs');
 const os = require('os');
 const packager = require('electron-packager');
 const del = require('del');
@@ -38,6 +39,13 @@ const DEFAULT_OPTS = {
     /^\/installers\/.*exe/,
   ]
 };
+
+if (appName !== pkg.productName) {
+  const filename = 'package.json';
+  const data = fs.readFileSync(filename, 'utf-8');
+  const newValue = data.replace('"productName": "Daedalus"', `"productName": "${appName}"`);
+  fs.writeFileSync(filename, newValue, 'utf-8');
+}
 
 const icon = argv.icon || argv.i || 'installers/icons/electron';
 if (icon) DEFAULT_OPTS.icon = icon;
