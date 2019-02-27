@@ -4,6 +4,7 @@
 
 /** Build file to package the app for release */
 
+const fs = require('fs');
 const os = require('os');
 const packager = require('electron-packager');
 const del = require('del');
@@ -16,7 +17,8 @@ const pkg = require('../package.json');
  */
 const argv = require('minimist')(process.argv.slice(2));
 
-const appName = argv.name || argv.n || pkg.productName;
+// const appName = argv.name || argv.n || pkg.productName;
+const appName = 'Daedalus Staging';
 const shouldUseAsar = argv.asar || argv.a || false;
 const shouldBuildAll = argv.all || false;
 
@@ -38,6 +40,13 @@ const DEFAULT_OPTS = {
     /^\/installers\/.*exe/,
   ]
 };
+
+const filename = 'package.json';
+const data = fs.readFileSync(filename, 'utf-8');
+console.log('data', data);
+const newValue = data.replace('"productName": "Daedalus"', `"productName": "${appName}"`);
+console.log('newValue', newValue);
+fs.writeFileSync(filename, newValue, 'utf-8');
 
 const icon = argv.icon || argv.i || 'installers/icons/electron';
 if (icon) DEFAULT_OPTS.icon = icon;
