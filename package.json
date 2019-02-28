@@ -1,6 +1,6 @@
 {
   "name": "daedalus",
-  "productName": "Daedalus Staging",
+  "productName": "Daedalus",
   "version": "0.13.0",
   "description": "Cryptocurrency Wallet",
   "main": "./dist/main/index.js",
