@@ -2,30 +2,29 @@ import { spawn, spawnSync } from 'child_process';
 import process from 'process';
 
 import psTree from 'ps-tree';
+import Log from 'electron-log';
 
 export class Mantis {
   supportedNetworks = ['etc', 'eth'];
 
-  constructor(mantisPath, mantisCmd, mantisArgs) {
+  constructor(mantisPath) {
     this.mantisProcess = null;
-    this.mantisCmd = mantisCmd;
     this.mantisPath = mantisPath;
-    this.mantisArgs = mantisArgs;
   }
 
-  start = (networkName) => {
+  start = networkName => {
     if (this.mantisProcess) {
       return;
     }
 
-    if (networkName && !this.supportedNetworks.includes(networkName)) {
+    if (!this.supportedNetworks.includes(networkName)) {
       throw new Error(`Unsupported network ${networkName}. Supported networks are ${this.supportedNetworks}`);
     }
 
     Log.info('Starting Mantis...');
     this.mantisProcess = spawn(
-      this.mantisCmd,
-      [this.mantisArgs].concat(networkName ? [this.getNetworkArg(networkName)] : []),
+      this.getNetworkCmd(networkName),
+      [],
       { cwd: this.mantisPath, detached: true, shell: true }
     );
   }
@@ -54,5 +53,7 @@ export class Mantis {
     }
   }
 
-  getNetworkArg = networkName => `-Dmantis.blockchains.network=${networkName}`
+  getNetworkCmd = networkName => `mantis-${networkName}`;
+
+  getNetworkArg = networkName => `-Dmantis.blockchains.network=${networkName}`;
 }

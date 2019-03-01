@@ -1,6 +1,6 @@
 // @flow
 import BigNumber from 'bignumber.js';
-import { remote } from 'electron';
+import { remote, ipcRenderer } from 'electron';
 import { isAddress } from 'web3-utils/src/utils';
 import { getEtcSyncProgress } from './getEtcSyncProgress';
 import { Logger, stringifyData, stringifyError } from '../../utils/logging';
@@ -11,7 +11,7 @@ import {
 import { mnemonicToSeedHex, quantityToBigNumber, unixTimestampToDate } from './lib/utils';
 import {
   getEtcWalletData, setEtcWalletData, unsetEtcWalletData, updateEtcWalletData,
-  initEtcWalletsDummyData,
+  initEtcWalletsDummyData, getNetwork, setNetwork,
 } from './etcLocalStorage';
 import { ETC_DEFAULT_GAS_PRICE, WEI_PER_ETC } from '../../config/numbersConfig';
 import Wallet from '../../domain/Wallet';
@@ -91,6 +91,38 @@ export type GetEstimatedGasPriceRequest = {
 export type GetEstimatedGasPriceResponse = Promise<BigNumber>;
 
 export default class EtcApi {
+
+  async startEtcNode(): Promise<void> {
+    return this.getCurrentNetworkName()
+      .then(name => ipcRenderer.send('mantis.start', name))
+      .then(() => this._waitForEvent('mantis.started'));
+  }
+
+  async switchToNetwork(networkName: string): Promise<void> {
+    return this.canUseNetwork(networkName)
+      .then((ifCan) => {
+        if (!ifCan) {
+          throw new Error(`Cannot use network ${networkName}`);
+        }
+
+        return undefined;
+      })
+      .then(() => ipcRenderer.send('mantis.switchTo', networkName))
+      .then(() => this._waitForEvent('mantis.started'))
+      .then(() => setNetwork(networkName));
+  }
+
+  async getCurrentNetworkName(): Promise<string> {
+    return getNetwork().then(val => val || 'etc');
+  }
+
+  async getAvailableNetworks(): Promise<string[]> {
+    return Promise.resolve(['eth', 'etc']);
+  }
+
+  async canUseNetwork(name: string): Promise<boolean> {
+    return (await this.getAvailableNetworks()).includes(name);
+  }
 
   async getSyncProgress(): Promise<GetSyncProgressResponse> {
     Logger.debug('EtcApi::getSyncProgress called');
@@ -363,6 +395,10 @@ export default class EtcApi {
       Logger.error('EtcApi::testReset error: ' + stringifyError(error));
       throw new GenericApiError();
     }
+  }
+
+  async _waitForEvent(channel: string): Promise<void> {
+    return new Promise(resolve => ipcRenderer.once(channel, resolve))
   }
 }
 

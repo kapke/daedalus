@@ -68,14 +68,13 @@ const isProd = process.env.NODE_ENV === 'production';
 const isTest = process.env.NODE_ENV === 'test';
 
 const isEtcApi = process.env.API === 'etc';
-const mantisCmd = requireEnv('MANTIS_CMD');
-const mantisArgs = requireEnv('MANTIS_ARGS');
+// const mantisCmd = requireEnv('MANTIS_CMD');
+// const mantisArgs = requireEnv('MANTIS_ARGS');
 const mantisPath = requireEnv('MANTIS_PATH');
 
 const daedalusVersion = process.env.DAEDALUS_VERSION || 'dev';
 
-const mantis = new Mantis(mantisPath, mantisCmd, mantisArgs);
-mantis.start(null); // temporary, eventually it will be managed by ipc
+const mantis = new Mantis(mantisPath);
 
 // Stop Mantis (on app quit)
 app.on('will-quit', mantis.stop);

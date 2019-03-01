@@ -21,7 +21,7 @@ export default class WalletSendPage extends Component<Props> {
   render() {
     const { intl } = this.context;
     const { uiDialogs } = this.props.stores;
-    const { wallets } = this.props.stores.etc;
+    const { wallets, network } = this.props.stores.etc;
     const { calculateTransactionFee, isValidAmount, isValidAddress } = wallets;
     const { actions } = this.props;
     const activeWallet = wallets.active;
@@ -31,7 +31,7 @@ export default class WalletSendPage extends Component<Props> {
 
     return (
       <WalletSendForm
-        currencyUnit={intl.formatMessage(globalMessages.unitEtc)}
+        currencyUnit={intl.formatMessage(network.currencyUnitMsg)}
         currencyMaxFractionalDigits={DECIMAL_PLACES_IN_ETC}
         validateAmount={isValidAmount}
         calculateTransactionFee={(receiver, amount) => (

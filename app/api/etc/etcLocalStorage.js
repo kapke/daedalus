@@ -2,12 +2,14 @@
 import Store from 'electron-store';
 import type { AssuranceModeOption } from '../../types/transactionAssuranceTypes';
 import environment from '../../environment';
+import { tryAsync } from '../../utils/async';
 
 const store = new Store();
 
 const networkForLocalStorage = String(environment.NETWORK);
 const storageKeys = {
   WALLETS: networkForLocalStorage + '-ETC-WALLETS',
+  NETWORK: networkForLocalStorage + '-NETWORK',
 };
 
 /**
@@ -83,6 +85,10 @@ export const unsetEtcWalletsData = (): Promise<void> => new Promise((resolve) =>
     resolve();
   } catch (error) {} // eslint-disable-line
 });
+
+export const getNetwork = (): Promise<?string> => tryAsync(() => store.get(storageKeys.NETWORK));
+export const setNetwork = (networkName: string): Promise<void> =>
+  tryAsync(() => store.set(storageKeys.NETWORK, networkName));
 
 // ======= DUMMY DATA =======
 

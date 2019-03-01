@@ -23,6 +23,8 @@ type Props = {
   currentLocale: string,
   onSelectLanguage: Function,
   isSubmitting: boolean,
+  currentNetwork: string,
+  onSelectNetwork: string => void,
   error?: ?LocalizableError,
 };
 

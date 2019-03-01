@@ -18,7 +18,7 @@
     "package-all": "npm run package -- --all",
     "postinstall": "node node_modules/fbjs-scripts/node/check-dev-engines.js package.json",
     "preinstall": "which electron || npm install electron@1.7.9",
-    "dev": "npm run purge-translations && cross-env API=etc concurrently --kill-others \"npm run hot-server\" \"npm run start-hot\"",
+    "dev": "npm run purge-translations && cross-env API=etc MANTIS_PATH='../mantis/target/universal/mantis-1.1-rc1/bin' concurrently --kill-others \"npm run hot-server\" \"npm run start-hot\"",
     "debug": "concurrently --kill-others \"npm run hot-server\" \"npm run start-debug-hot\"",
     "cleanup": "mop -v",
     "cucumber": "cross-env NODE_ENV=test BABEL_DISABLE_CACHE=1 cucumber-js --compiler js:babel-register --format 'progress-bar' --format-options '{\"snippetInterface\": \"synchronous\"}' --tags 'not @skip'",

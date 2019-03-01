@@ -1,5 +1,6 @@
 // @flow
 import { observable, action } from 'mobx';
+import { EtcNetworkStore } from './EtcNetworkStore';
 import EtcWalletsStore from './EtcWalletsStore';
 import EtcWalletSettingsStore from './EtcWalletSettingsStore';
 import EtcTransactionsStore from './EtcTransactionsStore';
@@ -8,18 +9,21 @@ export const etcStoreClasses = {
   wallets: EtcWalletsStore,
   walletSettings: EtcWalletSettingsStore,
   transactions: EtcTransactionsStore,
+  network: EtcNetworkStore,
 };
 
 export type EtcStoresMap = {
   wallets: EtcWalletsStore,
   walletSettings: EtcWalletSettingsStore,
   transactions: EtcTransactionsStore,
+  network: EtcNetworkStore,
 };
 
 const etcStores = observable({
   wallets: null,
   walletSettings: null,
   transactions: null,
+  network: null,
 });
 
 // Set up and return the stores and reset all stores to defaults

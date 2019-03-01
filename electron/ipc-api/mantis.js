@@ -10,7 +10,7 @@ export const mantisIpcApi = ({ mantis, ipc }) => {
   });
 
   ipc.on('mantis.switchTo', (event, network) => {
-    mantis.stop()
+    mantis.stop();
     mantis.start(network);
     event.sender.send('mantis.started', network);
   });

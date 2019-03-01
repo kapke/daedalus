@@ -13,6 +13,8 @@ export default class GeneralSettingsPage extends Component<InjectedProps> {
     this.props.actions.profile.updateLocale.trigger(values);
   };
 
+  switchNetwork = (name: string) => this.props.stores.etc.network.switchNetworkTo(name)
+
   render() {
     const { setProfileLocaleRequest, LANGUAGE_OPTIONS, currentLocale } = this.props.stores.profile;
     const isSubmitting = setProfileLocaleRequest.isExecuting;
@@ -22,6 +24,8 @@ export default class GeneralSettingsPage extends Component<InjectedProps> {
         isSubmitting={isSubmitting}
         languages={LANGUAGE_OPTIONS}
         currentLocale={currentLocale}
+        currentNetwork={this.props.stores.etc.network.name}
+        onSelectNetwork={this.switchNetwork}
         error={setProfileLocaleRequest.error}
       />
     );

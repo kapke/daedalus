@@ -168,7 +168,11 @@ export default class Transaction extends Component<Props, State> {
     ]);
 
     const status = intl.formatMessage(assuranceLevelTranslations[assuranceLevel]);
-    const currency = intl.formatMessage(environmentSpecificMessages[environment.API].currency);
+    const currency = intl.formatMessage(
+      environment.API === 'ada'
+        ? environmentSpecificMessages.ada.currency
+        : this.props.stores.etc.network.currencyUnitMsg
+    );
     const symbol = environment.isAdaApi() ? adaSymbol : etcSymbol;
 
     return (
